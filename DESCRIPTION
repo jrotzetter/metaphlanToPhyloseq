@@ -1,0 +1,26 @@
+Package: metaphlanToPhyloseq
+Title: Convert MetaPhlAn taxonomic profiles to phyloseq objects
+Version: 0.0.0.9000
+Authors@R: 
+    person("Jérémy", "Rotzetter", , "first.last@example.com", role = c("aut", "cre"),
+           comment = c(ORCID = "0009-0007-6076-7077"))
+Description: Simple package to load MetaPhlAn taxonomic profiles, clean or
+    filter them based on specified taxonomic rank or abundance threshold,
+    and create a phyloseq object from them.
+License: MIT + file LICENSE
+URL: https://github.com/jrotzetter/metaphlanToPhyloseq
+BugReports: https://github.com/jrotzetter/metaphlanToPhyloseq/issues
+Imports: 
+    dplyr (>= 1.1.4),
+    phyloseq (>= 1.46.0),
+    utils (>= 4.3.3)
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.1
+Depends: 
+    R (>= 2.10)
+LazyData: true
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr

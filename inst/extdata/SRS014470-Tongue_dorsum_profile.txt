@@ -1,0 +1,20 @@
+#mpa_vJun23_CHOCOPhlAnSGB_202307
+#/shares/CIBIO-Storage/CM/scratch/tools/20231211_2023.09_anaconda3/envs/metaphlan-4.1/bin/metaphlan SRS014470-Tongue_dorsum.fasta.gz --input_type fasta --nproc 4 --index mpa_vJun23_CHOCOPhlAnSGB_202307
+#19059 reads processed
+#SampleID	Metaphlan_Analysis
+#clade_name	NCBI_tax_id	relative_abundance	additional_species
+k__Bacteria	2	100.0	
+k__Bacteria|p__Firmicutes	2|1239	74.02531	
+k__Bacteria|p__Bacteroidota	2|976	25.97469	
+k__Bacteria|p__Firmicutes|c__Negativicutes	2|1239|909932	74.02531	
+k__Bacteria|p__Bacteroidota|c__Bacteroidia	2|976|200643	25.97469	
+k__Bacteria|p__Firmicutes|c__Negativicutes|o__Veillonellales	2|1239|909932|1843489	74.02531	
+k__Bacteria|p__Bacteroidota|c__Bacteroidia|o__Bacteroidales	2|976|200643|171549	25.97469	
+k__Bacteria|p__Firmicutes|c__Negativicutes|o__Veillonellales|f__Veillonellaceae	2|1239|909932|1843489|31977	74.02531	
+k__Bacteria|p__Bacteroidota|c__Bacteroidia|o__Bacteroidales|f__Prevotellaceae	2|976|200643|171549|171552	25.97469	
+k__Bacteria|p__Firmicutes|c__Negativicutes|o__Veillonellales|f__Veillonellaceae|g__Veillonella	2|1239|909932|1843489|31977|29465	74.02531	
+k__Bacteria|p__Bacteroidota|c__Bacteroidia|o__Bacteroidales|f__Prevotellaceae|g__Prevotella	2|976|200643|171549|171552|838	25.97469	
+k__Bacteria|p__Firmicutes|c__Negativicutes|o__Veillonellales|f__Veillonellaceae|g__Veillonella|s__Veillonella_dispar	2|1239|909932|1843489|31977|29465|39778	74.02531	
+k__Bacteria|p__Bacteroidota|c__Bacteroidia|o__Bacteroidales|f__Prevotellaceae|g__Prevotella|s__Prevotella_histicola	2|976|200643|171549|171552|838|470565	25.97469	
+k__Bacteria|p__Firmicutes|c__Negativicutes|o__Veillonellales|f__Veillonellaceae|g__Veillonella|s__Veillonella_dispar|t__SGB6952	2|1239|909932|1843489|31977|29465|39778|	74.02531	k__Bacteria|p__Firmicutes|c__Negativicutes|o__Veillonellales|f__Veillonellaceae|g__Veillonella|s__Veillonella_nakazawae,k__Bacteria|p__Firmicutes|c__Negativicutes|o__Veillonellales|f__Veillonellaceae|g__Veillonella|s__Veillonella_sp_AF42_16,k__Bacteria|p__Firmicutes|c__Negativicutes|o__Veillonellales|f__Veillonellaceae|g__Veillonella|s__Veillonella_sp_S12025_13,k__Bacteria|p__Firmicutes|c__Negativicutes|o__Veillonellales|f__Veillonellaceae|g__Veillonella|s__Veillonella_sp_T14073_2,k__Bacteria|p__Firmicutes|c__Negativicutes|o__Veillonellales|f__Veillonellaceae|g__Veillonella|s__Veillonella_infantium,k__Bacteria|p__Firmicutes|c__Negativicutes|o__Veillonellales|f__Veillonellaceae|g__Veillonella|s__Veillonella_parvula,k__Bacteria|p__Firmicutes|c__Negativicutes|o__Veillonellales|f__Veillonellaceae|g__Veillonella|s__Veillonella_sp_Ds1651
+k__Bacteria|p__Bacteroidota|c__Bacteroidia|o__Bacteroidales|f__Prevotellaceae|g__Prevotella|s__Prevotella_histicola|t__SGB1543	2|976|200643|171549|171552|838|470565|	25.97469	
