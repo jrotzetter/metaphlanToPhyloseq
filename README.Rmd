@@ -4,7 +4,7 @@ output: github_document
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-```{r, include = FALSE}
+```{r knitr_opts, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
@@ -25,27 +25,33 @@ knitr::opts_chunk$set(
 
 ## Overview
 
-metaphlanToPhyloseq is a simple R package to transform *MetaPhlAn 4* taxonomic microbiome abundance profiles into the right format for easy creation of a phyloseq object.
+metaphlanToPhyloseq is a simple R package to transform **MetaPhlAn 4** taxonomic microbiome abundance profiles into the right format for easy creation of a phyloseq object.
 
 ## Installation
 
 You can install the development version of metaphlanToPhyloseq from [GitHub](https://github.com/) with:
 
-```{r install-devtools, eval = FALSE}
+```{r install_devtools, eval = FALSE}
 # install.packages("devtools")
 devtools::install_github("jrotzetter/metaphlanToPhyloseq", build_vignettes = TRUE)
 ```
 
-Alternatively you can also use:
-```{r install-pak, eval = FALSE}
+Alternatively you can also use the `pak` package:
+```{r install_pak, eval = FALSE}
 # install.packages("pak")
 pak::pak("jrotzetter/metaphlanToPhyloseq")
+```
+
+Or the `remotes` package:
+```{r install_remotes, eval=FALSE}
+# install.packages("remotes")
+remotes::install_github("jrotzetter/metaphlanToPhyloseq", build_vignettes = TRUE)
 ```
 
 ## Dependencies
 - dplyr (>= 1.1.4)
 - phyloseq (>= 1.46.0)
-- utils (>= 4.3.3)
+- utils
 
 ## Usage
 
@@ -71,6 +77,7 @@ physeq_merged <- metaphlan_to_phyloseq(
   taxa_lvl = "Species"
 )
 ```
+For more details please see the *metaphlanToPhyloseq* vignette or the help pages in the documentation.
 
 ## To-do
 
@@ -82,7 +89,7 @@ physeq_merged <- metaphlan_to_phyloseq(
 
 ## Getting help
 
-If you encounter a bug, please file an issue with a minimal reproducible example on [GitHub](https://github.com/jrotzetter/metaphlanToPhyloseq/issues). For questions or help with MetaPhlAn, please visit the corresponding [bioBakery](https://forum.biobakery.org/c/microbial-community-profiling/metaphlan/7) forum. For help with phyloseq, helpful tutorials and articles can be found on [GitHub](https://joey711.github.io/phyloseq/index.html)
+If you encounter a bug, please file an issue with a minimal reproducible example on [GitHub](https://github.com/jrotzetter/metaphlanToPhyloseq/issues). For questions or help with MetaPhlAn, please visit the corresponding [bioBakery](https://forum.biobakery.org/c/microbial-community-profiling/metaphlan/7) forum. For help with phyloseq, helpful tutorials and articles can be found on [GitHub](https://joey711.github.io/phyloseq/index.html).
 
 ## License
 Released under [MIT](https://choosealicense.com/licenses/mit/) by [@jrotzetter](https://github.com/jrotzetter).

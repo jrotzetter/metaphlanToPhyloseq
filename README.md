@@ -18,7 +18,7 @@ R](https://img.shields.io/badge/RStudio-2023.12.1_Build_402-blue?logo=rstudio&lo
 
 ## Overview
 
-metaphlanToPhyloseq is a simple R package to transform *MetaPhlAn 4*
+metaphlanToPhyloseq is a simple R package to transform **MetaPhlAn 4**
 taxonomic microbiome abundance profiles into the right format for easy
 creation of a phyloseq object.
 
@@ -32,18 +32,25 @@ You can install the development version of metaphlanToPhyloseq from
 devtools::install_github("jrotzetter/metaphlanToPhyloseq", build_vignettes = TRUE)
 ```
 
-Alternatively you can also use:
+Alternatively you can also use the `pak` package:
 
 ``` r
 # install.packages("pak")
 pak::pak("jrotzetter/metaphlanToPhyloseq")
 ```
 
+Or the `remotes` package:
+
+``` r
+# install.packages("remotes")
+remotes::install_github("jrotzetter/metaphlanToPhyloseq", build_vignettes = TRUE)
+```
+
 ## Dependencies
 
 - dplyr (\>= 1.1.4)
 - phyloseq (\>= 1.46.0)
-- utils (\>= 4.3.3)
+- utils
 
 ## Usage
 
@@ -70,6 +77,9 @@ physeq_merged <- metaphlan_to_phyloseq(
 )
 ```
 
+For more details please see the *metaphlanToPhyloseq* vignette or the
+help pages in the documentation.
+
 ## To-do
 
 - Deploy pkgdown/GitHub Pages
@@ -89,7 +99,7 @@ example on
 questions or help with MetaPhlAn, please visit the corresponding
 [bioBakery](https://forum.biobakery.org/c/microbial-community-profiling/metaphlan/7)
 forum. For help with phyloseq, helpful tutorials and articles can be
-found on [GitHub](https://joey711.github.io/phyloseq/index.html)
+found on [GitHub](https://joey711.github.io/phyloseq/index.html).
 
 ## License
 
