@@ -8,7 +8,7 @@ Description: Simple package to load MetaPhlAn taxonomic profiles, clean or
     filter them based on specified taxonomic rank or abundance threshold,
     and create a phyloseq object from them.
 License: MIT + file LICENSE
-URL: https://github.com/jrotzetter/metaphlanToPhyloseq
+URL: https://github.com/jrotzetter/metaphlanToPhyloseq, https://jrotzetter.github.io/metaphlanToPhyloseq/
 BugReports: https://github.com/jrotzetter/metaphlanToPhyloseq/issues
 biocViews:
 Imports: 

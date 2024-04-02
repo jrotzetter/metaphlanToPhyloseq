@@ -2,7 +2,7 @@
 title: "Introduction to metaphlanToPhyloseq"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{metaphlanToPhyloseq}
+  %\VignetteIndexEntry{Introduction to metaphlanToPhyloseq}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

@@ -12,6 +12,7 @@ Simple package to load MetaPhlAn taxonomic profiles, clean or filter them based 
 Useful links:
 \itemize{
   \item \url{https://github.com/jrotzetter/metaphlanToPhyloseq}
+  \item \url{https://jrotzetter.github.io/metaphlanToPhyloseq/}
   \item Report bugs at \url{https://github.com/jrotzetter/metaphlanToPhyloseq/issues}
 }
 
