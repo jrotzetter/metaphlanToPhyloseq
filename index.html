@@ -80,7 +80,7 @@
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>You can install the development version of metaphlanToPhyloseq from <a href="https://github.com/" class="external-link">GitHub</a> with:</p>
+<p>You can install the development version of metaphlanToPhyloseq from <a href="https://github.com/jrotzetter/metaphlanToPhyloseq" class="external-link">GitHub</a> with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("devtools")</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"jrotzetter/metaphlanToPhyloseq"</span>, build_vignettes <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
@@ -126,17 +126,18 @@
 <span>  <span class="va">merged_profiles</span>,</span>
 <span>  taxa_lvl <span class="op">=</span> <span class="st">"Species"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p>For more details please see the <em>metaphlanToPhyloseq</em> vignette or the help pages in the documentation.</p>
+<p>For more details please see <code><a href="articles/metaphlanToPhyloseq.html">vignette("metaphlanToPhyloseq")</a></code> or the help pages in the documentation. Both are also available online at <a href="https://jrotzetter.github.io/metaphlanToPhyloseq/" class="uri">https://jrotzetter.github.io/metaphlanToPhyloseq/</a>.</p>
 </div>
 <div class="section level2">
-<h2 id="to-do">To-do<a class="anchor" aria-label="anchor" href="#to-do"></a>
+<h2 id="planned-features">Planned features<a class="anchor" aria-label="anchor" href="#planned-features"></a>
 </h2>
 <ul>
-<li>Deploy pkgdown/GitHub Pages</li>
 <li>Add valid, package-specific maintainer e-mail address</li>
-<li>Rewrite some functions (e.g., shorten_clade_names()) to also work with data that wasn’t pre-filtered to a chosen taxonomic rank when not directly loading a file from a path</li>
-<li>Allow metadata to be loaded directly from path in metaphlan_to_phyloseq()</li>
-<li>Add tests</li>
+<li>Rewrite some functions (e.g., <code><a href="reference/shorten_clade_names.html">shorten_clade_names()</a></code>) to also work with data that wasn’t pre-filtered to a chosen taxonomic rank when not directly loading a file from a path</li>
+<li>Allow metadata to be loaded directly from path in <code><a href="reference/metaphlan_to_phyloseq.html">metaphlan_to_phyloseq()</a></code>
+</li>
+<li>Add unit tests</li>
+<li>Potential CRAN submission after further maturation and expansion of the package (tree support, visualisations) in the future</li>
 </ul>
 </div>
 <div class="section level2">
@@ -184,7 +185,7 @@
 <div class="developers">
 <h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
-<li>Jérémy Rotzetter <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0009-0007-6076-7077" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li>Jeremy Rotzetter <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0009-0007-6076-7077" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 </ul>
 </div>
 
@@ -205,7 +206,7 @@
 
     <footer><div class="pkgdown-footer-left">
   <p></p>
-<p>Developed by Jérémy Rotzetter.</p>
+<p>Developed by Jeremy Rotzetter.</p>
 </div>
 
 <div class="pkgdown-footer-right">
