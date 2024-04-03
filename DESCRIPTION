@@ -2,7 +2,7 @@ Package: metaphlanToPhyloseq
 Title: Convert MetaPhlAn taxonomic profiles to phyloseq objects
 Version: 0.0.0.9000
 Authors@R: 
-    person("Jérémy", "Rotzetter", , "first.last@example.com", role = c("aut", "cre"),
+    person("Jeremy", "Rotzetter", , "first.last@example.com", role = c("aut", "cre"),
            comment = c(ORCID = "0009-0007-6076-7077"))
 Description: Simple package to load MetaPhlAn taxonomic profiles, clean or
     filter them based on specified taxonomic rank or abundance threshold,

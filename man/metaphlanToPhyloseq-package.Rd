@@ -18,7 +18,7 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Jérémy Rotzetter \email{first.last@example.com} (\href{https://orcid.org/0009-0007-6076-7077}{ORCID})
+\strong{Maintainer}: Jeremy Rotzetter \email{first.last@example.com} (\href{https://orcid.org/0009-0007-6076-7077}{ORCID})
 
 }
 \keyword{internal}
