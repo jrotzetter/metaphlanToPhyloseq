@@ -84,11 +84,6 @@ help pages in the documentation. Both are also available online at
 ## Planned features
 
 - Add valid, package-specific maintainer e-mail address
-- Rewrite some functions (e.g., `shorten_clade_names()`) to also work
-  with data that wasn’t pre-filtered to a chosen taxonomic rank when not
-  directly loading a file from a path
-- Allow metadata to be loaded directly from path in
-  `metaphlan_to_phyloseq()`
 - Add unit tests
 - Potential CRAN submission after further maturation and expansion of
   the package (tree support, visualisations) in the future
