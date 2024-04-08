@@ -5,8 +5,8 @@
 #'  the data frame.
 #'
 #' @param df The input MetaPhlAn data frame.
-#' @param add_column `Logical` value indicating whether to add a OTU column
-#'  to the data frame.
+#' @param add_column `Logical` value indicating whether to add an OTU column
+#'  to the data frame. Default is `FALSE`.
 #'
 #' @returns The data frame with OTU row names added.
 #'
@@ -192,7 +192,7 @@ check_taxa_lvl <- function(mtphlan_profile, taxa_lvl) {
   # Check if taxa_lvl is valid
   valid_taxa_lvls <- c(
     "k", "p", "c", "o", "f", "g", "s", "kingdom", "phylum",
-    "class", "family", "genus", "species"
+    "class", "order", "family", "genus", "species"
   )
   if (!(taxa_lvl %in% valid_taxa_lvls)) {
     stop(paste0(

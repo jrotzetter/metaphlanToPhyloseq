@@ -38,8 +38,8 @@ loaded is assumed to be multiple merged MetaPhlAn profiles.}
 A phyloseq object representing the MetaPhlAn profile.
 }
 \description{
-This function converts a MetaPhlAn profile to a phyloseq object,
-which is a common data structure used in microbiome analysis.
+This function converts a MetaPhlAn profile to a phyloseq object
+when give the file path or a pre-loaded table.
 }
 \note{
 If \code{mtphlan_profile} is an already loaded object, it should be filtered to

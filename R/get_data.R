@@ -115,7 +115,7 @@ get_taxa_table <- function(
   # Check if taxa_lvl is valid
   valid_taxa_lvls <- c(
     "k", "p", "c", "o", "f", "g", "s", "kingdom", "phylum",
-    "class", "family", "genus", "species"
+    "class", "order", "family", "genus", "species"
   )
   if (!(taxa_lvl %in% valid_taxa_lvls)) {
     stop(paste0(

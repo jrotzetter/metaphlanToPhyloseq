@@ -34,7 +34,7 @@ filter_taxa_lvl <- function(df, taxa_lvl) {
   # Check if taxa_lvl is valid
   valid_taxa_lvls <- c(
     "k", "p", "c", "o", "f", "g", "s", "kingdom", "phylum",
-    "class", "family", "genus", "species"
+    "class", "order", "family", "genus", "species"
   )
   if (!(taxa_lvl %in% valid_taxa_lvls)) {
     stop(paste0(
@@ -46,7 +46,6 @@ filter_taxa_lvl <- function(df, taxa_lvl) {
   first_letter <- substr(taxa_lvl, 1, 1)
 
   # Filter the dataframe based on taxa_lvl
-  # df_taxa_lvl <- df[grepl(paste0("\\|", first_letter,"__[^|]*$"), df$clade_name), ]
   df_taxa_lvl <- df[grepl(paste0(first_letter, "__[^|]*$"), df$clade_name), ]
   rownames(df_taxa_lvl) <- NULL
 
@@ -98,7 +97,6 @@ filter_threshold <- function(df, threshold, merged_profiles = TRUE) {
   for (col in sample_cols) {
     if (col != "clade_name") {
       # Sum values below threshold for current column, excluding Other clade
-      # df[df$clade_name == 'Other', col] <- sum(df[df[col] < threshold & df$clade_name != "Other", col])
       all_below_thresh <- rowSums(df[sample_cols] < threshold) == length(sample_cols)
       df[df$clade_name == "Other", col] <- sum(
         df[all_below_thresh & df$clade_name != "Other", col]
@@ -106,7 +104,6 @@ filter_threshold <- function(df, threshold, merged_profiles = TRUE) {
     }
   }
   if (merged_profiles) {
-    # sample_cols <- get_sample_cols(df)
     sample_cols <- colnames(df[sapply(df, is.numeric)])
     ids <- df$clade_name
     # Create thresholded version of data

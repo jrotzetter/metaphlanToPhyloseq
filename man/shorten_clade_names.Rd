@@ -14,7 +14,7 @@ shorten_clade_names(
 \arguments{
 \item{data}{The input dataset. Assumes clade names are of the structure
 \emph{\strong{k__Bacteria|p__Firmicutes|c__Bacilli|o__Lactobacillales|f__Lactobacillaceae}}
-and found in the 'clade_name' column.}
+and found in the 'clade_name' column or the column names themselves.}
 
 \item{taxa_lvl}{The taxonomic level at which the clade names should be
 shortened. Valid options include 'kingdom', 'phylum', 'class', 'order',
@@ -22,33 +22,45 @@ shortened. Valid options include 'kingdom', 'phylum', 'class', 'order',
 are also accepted.}
 
 \item{apply_to_colnames}{\code{Logical} indicating whether the shortening should
-be applied to column names or row values. Default is TRUE.}
+be applied to column names or row values. Default is \code{TRUE}.}
 
 \item{selected_cols}{A \code{character} vector specifying the columns to which
-the shortening should be applied. If \code{NULL}, the shortening is applied to all
-columns. Default is \code{NULL}.}
+the shortening should be applied. If \code{NULL} (the default), the shortening
+is applied to all columns.}
 }
 \value{
 The dataset with the clade names shortened based on the specified
 taxonomic level.
+
+In the case where there are entries not matching the chosen taxonomic rank,
+these are either returned 'as is', or if they follow the same structure,
+the name will be shortened to the last taxonomic entry
+(see rows 2, 5 and 6 of the example)
 }
 \description{
 This function shortens the taxonomic names of clades in a given
-dataset based on a specified taxonomic level, using '|' as a separator.
+dataset based on a specified taxonomic level, using the first letter of the
+taxonomic rank + "__" as rank identifiers.
 }
-\details{
+\note{
+This function is not intended to be used with the workflow for the creation
+of phyloseq objects as the full sequence of taxonomic names is needed for
+the creation of the taxonomy table in \code{\link[=get_taxa_table]{get_taxa_table()}}. It may however be
+useful for analyses or plots created directly with/from the dataframes.
+
 This function uses the dplyr package for data manipulation.
 }
 \examples{
-head(species_only$clade_name)
+head(merged_abundance_profiles$clade_name)
 
 taxa_shortened <- shorten_clade_names(
-  species_only,
-  "species",
+  merged_abundance_profiles,
+  "Phylum",
   apply_to_colnames = FALSE,
-  selected_cols = "clade_name")
+  selected_cols = "clade_name"
+)
 
-  head(taxa_shortened$clade_name)
+head(taxa_shortened$clade_name)
 
 }
 \author{

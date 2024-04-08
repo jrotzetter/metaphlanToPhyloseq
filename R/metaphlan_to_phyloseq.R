@@ -1,7 +1,7 @@
 #' Convert MetaPhlAn profile to phyloseq object
 #'
-#' @description This function converts a MetaPhlAn profile to a phyloseq object,
-#'  which is a common data structure used in microbiome analysis.
+#' @description This function converts a MetaPhlAn profile to a phyloseq object
+#'  when give the file path or a pre-loaded table.
 #'
 #' @param mtphlan_profile The MetaPhlAn profile to be converted. It can be
 #'  either a file path or a data frame of MetaPhlAn profile(s).
@@ -54,7 +54,7 @@ metaphlan_to_phyloseq <- function(
   # Check if taxa_lvl is valid
   valid_taxa_lvls <- c(
     "k", "p", "c", "o", "f", "g", "s", "kingdom", "phylum",
-    "class", "family", "genus", "species"
+    "class", "order", "family", "genus", "species"
   )
   if (!(taxa_lvl %in% valid_taxa_lvls)) {
     stop(paste0(

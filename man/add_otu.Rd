@@ -9,8 +9,8 @@ add_otu(df, add_column = FALSE)
 \arguments{
 \item{df}{The input MetaPhlAn data frame.}
 
-\item{add_column}{\code{Logical} value indicating whether to add a OTU column
-to the data frame.}
+\item{add_column}{\code{Logical} value indicating whether to add an OTU column
+to the data frame. Default is \code{FALSE}.}
 }
 \value{
 The data frame with OTU row names added.

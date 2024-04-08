@@ -113,38 +113,51 @@ clean_metadata <- function(
 #' Shorten clade names in a dataset to chosen taxonomic level
 #'
 #' @description This function shortens the taxonomic names of clades in a given
-#'  dataset based on a specified taxonomic level, using '|' as a separator.
+#'  dataset based on a specified taxonomic level, using the first letter of the
+#'  taxonomic rank + "__" as rank identifiers.
 #'
 #' @param data The input dataset. Assumes clade names are of the structure
 #'  ***k__Bacteria|p__Firmicutes|c__Bacilli|o__Lactobacillales|f__Lactobacillaceae***
-#'  and found in the 'clade_name' column.
+#'  and found in the 'clade_name' column or the column names themselves.
 #' @param taxa_lvl The taxonomic level at which the clade names should be
 #'  shortened. Valid options include 'kingdom', 'phylum', 'class', 'order',
 #'   'family', 'genus', or 'species'. First letter abbreviations (e.g., 's')
 #'    are also accepted.
 #' @param apply_to_colnames `Logical` indicating whether the shortening should
-#'  be applied to column names or row values. Default is TRUE.
+#'  be applied to column names or row values. Default is `TRUE`.
 #' @param selected_cols A `character` vector specifying the columns to which
-#'  the shortening should be applied. If `NULL`, the shortening is applied to all
-#'   columns. Default is `NULL`.
+#'  the shortening should be applied. If `NULL` (the default), the shortening
+#'  is applied to all columns.
 #'
 #' @returns The dataset with the clade names shortened based on the specified
 #'  taxonomic level.
 #'
+#'  In the case where there are entries not matching the chosen taxonomic rank,
+#'  these are either returned 'as is', or if they follow the same structure,
+#'  the name will be shortened to the last taxonomic entry
+#'  (see rows 2, 5 and 6 of the example)
+#'
 #' @export
 #'
-#' @details This function uses the dplyr package for data manipulation.
+#' @note
+#' This function is not intended to be used with the workflow for the creation
+#' of phyloseq objects as the full sequence of taxonomic names is needed for
+#' the creation of the taxonomy table in [get_taxa_table()]. It may however be
+#' useful for analyses or plots created directly with/from the dataframes.
+#'
+#' This function uses the dplyr package for data manipulation.
 #'
 #' @examples
-#' head(species_only$clade_name)
+#' head(merged_abundance_profiles$clade_name)
 #'
 #' taxa_shortened <- shorten_clade_names(
-#'   species_only,
-#'   "species",
+#'   merged_abundance_profiles,
+#'   "Phylum",
 #'   apply_to_colnames = FALSE,
-#'   selected_cols = "clade_name")
+#'   selected_cols = "clade_name"
+#' )
 #'
-#'   head(taxa_shortened$clade_name)
+#' head(taxa_shortened$clade_name)
 #'
 #' @author Jérémy Rotzetter
 shorten_clade_names <- function(
@@ -174,7 +187,7 @@ shorten_clade_names <- function(
   # Check if taxa_lvl is valid
   valid_taxa_lvls <- c(
     "k", "p", "c", "o", "f", "g", "s", "kingdom", "phylum",
-    "class", "family", "genus", "species"
+    "class", "order", "family", "genus", "species"
   )
   if (!(taxa_lvl %in% valid_taxa_lvls)) {
     stop(paste0(
@@ -185,21 +198,44 @@ shorten_clade_names <- function(
 
   first_letter <- substr(taxa_lvl, 1, 1)
 
+  # Function to get the last taxonomic entry
+  extract_name <- function(name, first_letter) {
+    pattern <- "\\b[kpcofgs]__\\w+\\b$"
+    matches <- regmatches(name, gregexpr(pattern, name))[[1]]
+    last_match <- matches[length(matches)]
+
+    if (length(last_match) > 0) {
+      if (grepl(paste0("\\b", first_letter, "__\\w+\\b$"), last_match)) {
+        # If the first_letter pattern is found, extract the short name
+        short_name <- sub(
+          paste0("\\b", first_letter, "__(\\w+\\b$)"),
+          "\\1",
+          last_match
+        )
+      } else { # If the first_letter pattern is not found, use the entire last
+        # match as the short name
+        short_name <- last_match
+      }
+    } else { # If there are no matches, use original 'name' as the short name
+      short_name <- name
+    }
+    return(short_name)
+  }
+
   # Apply shortening to column names
   if (apply_to_colnames) {
     # Shorten all columns if none specified
     if (is.null(selected_cols)) {
-      colnames(data) <- sub(
-        paste0(".*\\|", first_letter, "__"), "", colnames(data)
+      colnames(data) <- sapply(
+        colnames(data),
+        extract_name,
+        first_letter = first_letter
       )
-      # colnames(data) <- sub(paste0("(.*)\\|", first_letter, "__(.*)\\|.*"), "\\2", colnames(data))
     } else { # Otherwise only shorten selected cols
-      colnames(data)[colnames(data) %in% selected_cols] <- sub(
-        paste0(
-          ".*\\|", first_letter, "__"
-        ),
-        "",
-        colnames(data)[colnames(data) %in% selected_cols]
+      colnames(data)[colnames(data) %in% selected_cols] <- sapply(
+        colnames(data)[colnames(data) %in% selected_cols],
+        extract_name,
+        first_letter = first_letter
       )
     }
     # Apply shortening to row values
@@ -207,14 +243,15 @@ shorten_clade_names <- function(
     if (is.null(selected_cols)) {
       # Shorten all columns if none specified
       if (any(sapply(data, is.numeric))) {
-        stop("There are numeric entries!")
+        stop("There are numeric entries! Please select only non-numeric columns.")
         # Shorten non-numeric columns
       } else {
         data <- data |>
           dplyr::rowwise() |>
-          dplyr::mutate(dplyr::across(dplyr::everything(), ~ sub(
-            paste0(".*\\|", first_letter, "__"), "", .
-          )))
+          dplyr::mutate(dplyr::across(
+            dplyr::everything(),
+            ~ extract_name(., first_letter = first_letter)
+          ))
       }
       # Otherwise only shorten specified columns
     } else {
@@ -225,9 +262,10 @@ shorten_clade_names <- function(
       } else {
         data <- data |>
           dplyr::rowwise() |>
-          dplyr::mutate(dplyr::across(dplyr::all_of(selected_cols), ~ sub(
-            paste0(".*\\|", first_letter, "__"), "", .
-          )))
+          dplyr::mutate(dplyr::across(
+            dplyr::all_of(selected_cols),
+            ~ extract_name(., first_letter = first_letter)
+          ))
       }
     }
   }
