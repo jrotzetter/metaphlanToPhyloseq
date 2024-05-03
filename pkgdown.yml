@@ -1,9 +1,9 @@
 pandoc: 3.1.11
-pkgdown: 2.0.7
+pkgdown: 2.0.9
 pkgdown_sha: ~
 articles:
   metaphlanToPhyloseq: metaphlanToPhyloseq.html
-last_built: 2024-04-08T20:59Z
+last_built: 2024-05-03T19:25Z
 urls:
   reference: https://jrotzetter.github.io/metaphlanToPhyloseq/reference
   article: https://jrotzetter.github.io/metaphlanToPhyloseq/articles
