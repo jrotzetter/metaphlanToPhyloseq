@@ -18,6 +18,11 @@ A data frame containing the MetaPhlAn results.
 \description{
 Function to load a MetaPhlAn profile from a file path.
 }
+\details{
+If a single MetaPhlAn profile is to be loaded, \code{merged_profiles} should be
+set to \code{FALSE}. THe single profile is assumed to contain the column names
+\code{clade_name}, \code{NCBI_tax_id}, \code{relative_abundance} and \code{additional_species}.
+}
 \examples{
 path <- list_example("merged_abundance_table.txt")
 data <- load_metaphlan_profile(path = path)

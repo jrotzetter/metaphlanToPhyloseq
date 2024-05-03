@@ -8,6 +8,12 @@
 #'
 #' @returns A data frame containing the MetaPhlAn results.
 #'
+#' @details
+#' If a single MetaPhlAn profile is to be loaded, `merged_profiles` should be
+#' set to `FALSE`. THe single profile is assumed to contain the column names
+#' `clade_name`, `NCBI_tax_id`, `relative_abundance` and `additional_species`.
+#'
+#'
 #' @importFrom utils read.table
 #' @export
 #'
@@ -21,10 +27,15 @@ load_metaphlan_profile <- function(path, merged_profiles = TRUE) {
   stopifnot(is.character(path))
 
   if (merged_profiles) {
-    data <- read.table(path, skip = 1, header = TRUE, sep = "\t")
+    data <- read.table(path, header = TRUE, sep = "\t")
     if (!any(colnames(data) == "clade_name")) {
-      stop(paste0(
-        "Loaded file seems to not be merged MetaPhlAn profiles! ",
+      stop(paste(
+        "Loaded file seems to be missing the \"clade_name\" column!"
+      ))
+    }
+    if (any(c("NCBI_tax_id", "additional_species") %in% names(data))) {
+      stop(paste(
+        "Loaded file seems to be a single MetaPhlAn profile!",
         "Please set merged_profiles to FALSE."
       ))
     }
@@ -55,8 +66,8 @@ load_metaphlan_profile <- function(path, merged_profiles = TRUE) {
 #'
 #' @param df The input data frame.
 #' @param taxa_lvl The taxonomic level to extract ('kingdom', 'phylum', 'class',
-#'  'order', 'family', 'genus', or 'species'). First letter abbreviations
-#'   (e.g., 's') are also accepted.
+#'  'order', 'family', 'genus', 'species' or 't' (SGB)). First letter abbreviations
+#'   (e.g., 's') are also accepted. Is deactivated with `NULL` by default.
 #' @param taxa_are_rows `Logical`; if `TRUE`, taxa information is in the row
 #'  names of the data frame, otherwise it is assumed to be in the 'clade_name'
 #'  column.
@@ -65,8 +76,8 @@ load_metaphlan_profile <- function(path, merged_profiles = TRUE) {
 #'
 #' @returns A taxonomic matrix.
 #'
-#' @note Assumes the input data frame has already been filtered to a specific
-#' taxonomic level.
+#' @note Will work with unfiltered as well as filtered to a specific taxonomic
+#' level input data frames.
 #'
 #' @importFrom utils hasName
 #' @export
@@ -78,68 +89,17 @@ load_metaphlan_profile <- function(path, merged_profiles = TRUE) {
 #' @author Jérémy Rotzetter
 get_taxa_table <- function(
     df,
-    taxa_lvl,
+    taxa_lvl = NULL,
     taxa_are_rows = FALSE,
     use_taxa_names = FALSE) {
   # Function to trim taxon names
   trim_taxa_names <- function(x) {
-    match <- gsub("^[kpcofgs]__", "", as.character(x))
+    match <- gsub("^[kpcofgst]__", "", as.character(x))
     return(match)
   }
-  # Check if 'clade_name' column exists when taxa_are_rows is FALSE
-  if (!taxa_are_rows & !hasName(df, "clade_name")) {
-    stop("The 'clade_name' column does not exist!")
-  }
 
-  # Check if rownames are numbers or missing the taxonomic level separator
-  if (taxa_are_rows &&
-    (all(grepl("^\\d+$", rownames(df))) ||
-      !any(grepl("\\|", rownames(df))))) {
-    warning(paste0(
-      "Rownames are numbers, or do not contain the '|' separator. ",
-      "'taxa_are_rows' set to FALSE."
-    ))
-    taxa_are_rows <- FALSE
-  }
+  stopifnot(is.null(taxa_lvl) | is.character(taxa_lvl))
 
-  # Check if taxa_lvl is missing
-  if (missing(taxa_lvl)) {
-    stop(paste0(
-      "The 'taxa_lvl' parameter is missing. Please choose one of ",
-      "'kingdom', 'phylum', 'class', 'order', 'family', 'genus' or 'species'."
-    ))
-  }
-  # Convert taxa_lvl to lowercase
-  taxa_lvl <- lowercase_str(taxa_lvl)
-
-  # Check if taxa_lvl is valid
-  valid_taxa_lvls <- c(
-    "k", "p", "c", "o", "f", "g", "s", "kingdom", "phylum",
-    "class", "order", "family", "genus", "species"
-  )
-  if (!(taxa_lvl %in% valid_taxa_lvls)) {
-    stop(paste0(
-      "Invalid taxa_lvl. Please choose one of 'kingdom', 'phylum', ",
-      "'class', 'order', 'family', 'genus', or 'species'."
-    ))
-  }
-  # Check if selected taxon level matches metaphlan profile
-  if (!check_taxa_lvl(df, taxa_lvl)) {
-    stop("Selected taxon level does not match metaphlan profile!")
-  }
-  # Get full name and capitalize taxa_lvl
-  taxa_lvl <- get_full_name(taxa_lvl)
-  taxa_lvl <- capitalize_str(taxa_lvl)
-
-  # Split clade_name or rownames by pipe to separate taxon levels
-  if (taxa_are_rows) {
-    df_taxa <- as.data.frame(strsplit(rownames(df), "|", fixed = TRUE))
-  } else {
-    df_taxa <- as.data.frame(strsplit(df$clade_name, "|", fixed = TRUE))
-  }
-
-  df_taxa <- as.data.frame(t(df_taxa))
-  # Set column names and value to extract
   taxa_cols <- c(
     "Kingdom",
     "Phylum",
@@ -147,37 +107,96 @@ get_taxa_table <- function(
     "Order",
     "Family",
     "Genus",
-    "Species"
+    "Species",
+    "SGB"
   )
-  taxa_dict <- c(
-    "Kingdom" = 1,
-    "Phylum" = 2,
-    "Class" = 3,
-    "Order" = 4,
-    "Family" = 5,
-    "Genus" = 6,
-    "Species" = 7
-  )
-  value <- taxa_dict[[taxa_lvl]]
-  taxa_cols <- taxa_cols[1:value]
-  names(df_taxa) <- taxa_cols
-  # Trim taxon names
-  for (col in names(df_taxa)) {
-    df_taxa[[col]] <- trim_taxa_names(df_taxa[[col]])
+
+  # Check if 'clade_name' column exists when taxa_are_rows is FALSE
+  if (!taxa_are_rows & !hasName(df, "clade_name")) {
+    stop("The 'clade_name' column does not exist!")
   }
+
+  # Check if rownames are numbers
+  if (taxa_are_rows &&
+    (all(grepl("^\\d+$", rownames(df))))) {
+    warning(paste0(
+      "Rownames are numbers!'taxa_are_rows' set to FALSE."
+    ))
+    taxa_are_rows <- FALSE
+  }
+
+  # Split clade_name or rownames by pipe to separate taxon levels
+  if (taxa_are_rows) {
+    split_parts <- strsplit(rownames(df), "\\|")
+  } else {
+    # Split the clade_name column
+    split_parts <- strsplit(df$clade_name, "\\|")
+  }
+
+  # Determine the maximum number of parts
+  max_parts <- max(lengths(split_parts))
+
+  # Create a new dataframe with NA values
+  df_taxa <- data.frame(matrix(NA, nrow = length(split_parts), ncol = max_parts))
+
+  # Assign the split parts to the new dataframe
+  for (i in 1:length(split_parts)) {
+    df_taxa[i, 1:length(split_parts[[i]])] <- split_parts[[i]]
+  }
+  names(df_taxa) <- taxa_cols[1:ncol(df_taxa)]
+
+  if (is.character(taxa_lvl)) {
+    # Convert taxa_lvl to lowercase
+    taxa_lvl <- lowercase_str(taxa_lvl)
+
+    # Check if taxa_lvl is valid
+    valid_taxa_lvls <- c(
+      "k", "p", "c", "o", "f", "g", "s", "t", "kingdom", "phylum",
+      "class", "order", "family", "genus", "species"
+    )
+    if (!(taxa_lvl %in% valid_taxa_lvls)) {
+      stop(paste(
+        "Invalid taxa_lvl. Please choose one of 'kingdom', 'phylum',",
+        "'class', 'order', 'family', 'genus', 'species', or 't (SGB)'."
+      ))
+    }
+
+    if (any(df_taxa[1] == "Other")) {
+      df_taxa[df_taxa[1] == "Other", ] <- "Other"
+    }
+
+    # Check if all rows have the same number of non-NA entries, to verify if
+    # metaphlan profile was prefiltered to specifc taxonomic rank or not
+    if (!all(rowSums(!is.na(df_taxa)) == rowSums(!is.na(df_taxa))[1])) {
+      stop("Please filter the metaphlan profile to a specific taxonomic rank first.")
+    }
+
+    # Check if selected taxon level matches metaphlan profile
+    if (!check_taxa_lvl(df, taxa_lvl)) {
+      stop("Selected taxon level does not match with filtered metaphlan profile!")
+    }
+
+    # Trim taxon names
+    for (col in names(df_taxa)) {
+      df_taxa[[col]] <- trim_taxa_names(df_taxa[[col]])
+    }
+  }
+
   # Set new rownames
   if (use_taxa_names) {
-    rownames(df_taxa) <- df_taxa[, ncol(df_taxa)]
+    # rownames(df_taxa) <- df_taxa[, ncol(df_taxa)]
+    rownames(df_taxa) <- apply(df_taxa, 1, function(x) utils::tail(stats::na.omit(x), 1))
+    # Trim taxon names
+    for (col in names(df_taxa)) {
+      df_taxa[[col]] <- trim_taxa_names(df_taxa[[col]])
+    }
   } else {
+    # Trim taxon names
+    for (col in names(df_taxa)) {
+      df_taxa[[col]] <- trim_taxa_names(df_taxa[[col]])
+    }
     otu_index <- paste0("Otu", 1:nrow(df))
-    # df_taxa$Otu <- otu_index # in case you would like an Otu column
-    # taxa_cols <- names(df_taxa)[!names(df_taxa) %in% "Otu"]
-    # taxa_cols <- taxa_cols[!grepl('Otu', taxa_cols)]
 
-    # for (col in taxa_cols) {
-    #   # df_taxa[nrow(df_taxa), col] <- 'Other'
-    #   df_taxa[df_taxa == 'Other', col] <- 'Other'
-    # }
     rownames(df_taxa) <- otu_index
   }
 

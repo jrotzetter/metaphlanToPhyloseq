@@ -4,14 +4,19 @@
 \alias{get_taxa_table}
 \title{Get taxonomic table}
 \usage{
-get_taxa_table(df, taxa_lvl, taxa_are_rows = FALSE, use_taxa_names = FALSE)
+get_taxa_table(
+  df,
+  taxa_lvl = NULL,
+  taxa_are_rows = FALSE,
+  use_taxa_names = FALSE
+)
 }
 \arguments{
 \item{df}{The input data frame.}
 
 \item{taxa_lvl}{The taxonomic level to extract ('kingdom', 'phylum', 'class',
-'order', 'family', 'genus', or 'species'). First letter abbreviations
-(e.g., 's') are also accepted.}
+'order', 'family', 'genus', 'species' or 't' (SGB)). First letter abbreviations
+(e.g., 's') are also accepted. Is deactivated with \code{NULL} by default.}
 
 \item{taxa_are_rows}{\code{Logical}; if \code{TRUE}, taxa information is in the row
 names of the data frame, otherwise it is assumed to be in the 'clade_name'
@@ -28,8 +33,8 @@ Function to extract taxonomic information from a data frame and
 prepare it for phyloseq.
 }
 \note{
-Assumes the input data frame has already been filtered to a specific
-taxonomic level.
+Will work with unfiltered as well as filtered to a specific taxonomic
+level input data frames.
 }
 \examples{
 taxmat <- get_taxa_table(species_only, taxa_lvl = "s")

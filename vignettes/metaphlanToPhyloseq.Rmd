@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
 metaphlanToPhyloseq is a simple R package to transform *MetaPhlAn 4* taxonomic microbiome abundance profiles into the right format for easy creation of a phyloseq object. It also comes bundled with a few useful functions for easy pattern removal from column names or row values, as well as filtering for taxa below a specified threshold and bundling them together in their own entry.
 
 Principally there are two ways to use this package:
-1. Automatic: Loading the profile(s) directly from a file path and convert directly to a phyloseq object
+1. Automatic: Loading the profile(s) directly from a file path and convert directly to a phyloseq object.
 2. Manual: Import data separately into R before phyloseq creation. This may require additional steps but potentially allows for greater control of which data is included.
 
 Both ways will now shortly be illustrated with example data included in the package. But first let's load the package.
@@ -29,7 +29,7 @@ library(metaphlanToPhyloseq)
 ## 1. Automatic: Directly from path
 
 This part is relatively straight forward. Simply specify the file path to the MetaPhlAn profile(s) to be converted with `mtphlan_profile`. If multiple profiles (`merged_profiles = TRUE`) are used and metadata for the samples is available, add it under `metadata` and point to the column containing the sample names in `sample_column`. The function will then compare the profile sample names with those found in the metadata and only keep those that are shared between the two.
-`taxa_lvl` is used to specify the taxonomic level to filter the profile to. Valid options are 'kingdom', 'phylum', 'class', 'order', 'family', 'genus', or 'species'. First letter abbreviations are also accepted.
+`taxa_lvl` is used to specify the taxonomic level to filter the profile to (optional). Valid options are 'kingdom', 'phylum', 'class', 'order', 'family', 'genus', 'species' or 't' for Species Genome Bin (SGB). First letter abbreviations are also accepted (except for SGB).
 With `use_taxa_names = TRUE` it is possible to use the taxonomic names instead of numbered OTUs in the resulting phyloseq object. Compare the row names between the otu table and taxonomy table below.
 <!-- message=FALSE due to a S3 method being overwritten by 'data.table' when loading the phyloseq package. This message is normally not visible outside of rmarkdown and might cause some confusion -->
 
@@ -58,19 +58,17 @@ head(merged_profiles@tax_table)
 
 ### 2.1 With metaphlan_to_phyloseq()
 
-If the MetaPhlAn profiles are not loaded directly through `metaphlan_to_phyloseq()`, whether for editing names or subsetting columns or rows, an additional step will be necessary for single profiles in this case, since these also contain the non-numeric *'NCBI_tax_id'* and *'additional_species'* columns, which need to be dropped for `metaphlan_to_phyloseq()` to work.
+If the MetaPhlAn profiles are not loaded directly through `metaphlan_to_phyloseq()`, whether for editing names or subsetting columns or rows first, `metaphlan_to_phyloseq()` can be used just as easily.
 
 ```{r manual-w/-func}
 # Structure of a single MetaPhlAn microbiome profile
 head(single_abundance_profile, 3)
 
-# Keep only the columns of interest (clade_name and relative_abundance)
-single_profile <- single_abundance_profile[, c(1, 3)]
-
 # Create a phyloseq object from a single pre-loaded profile...
 physeq_single <- metaphlan_to_phyloseq(
-  mtphlan_profile = single_profile,
-  taxa_lvl = "genus"
+    mtphlan_profile = single_abundance_profile,
+    taxa_lvl = "genus",
+    merged_profiles = FALSE
 )
 
 # ... or from multiple merged profiles

@@ -1,18 +1,18 @@
 #' Convert MetaPhlAn profile to phyloseq object
 #'
 #' @description This function converts a MetaPhlAn profile to a phyloseq object
-#'  when give the file path or a pre-loaded table.
+#'  when given the file path or a pre-loaded table.
 #'
 #' @param mtphlan_profile The MetaPhlAn profile to be converted. It can be
 #'  either a file path or a data frame of MetaPhlAn profile(s).
-#' @param taxa_lvl The taxonomic level to filter the profile to. Valid options
-#'  are 'kingdom', 'phylum', 'class', 'order', 'family', 'genus', or 'species'.
-#'   First letter abbreviations are also accepted.
+#' @param taxa_lvl Optional taxonomic level to filter the profile to. Valid
+#'  options are 'kingdom', 'phylum', 'class', 'order', 'family', 'genus',
+#'  'species' or 't' (SGB). First letter abbreviations are also accepted.
 #' @param metadata Optional metadata for the samples. If provided, it should be
 #'  a data frame.
-#' @param sample_column `character` string. The column in the metadata
+#' @param sample_column `Character` string. The column in the metadata
 #'  containing the sample names. Should match column names of the MetaPhlAn
-#'   profile.
+#'  profile.
 #' @param use_taxa_names `Logical` indicating whether to use taxonomic names
 #'  instead of OTUs in the resulting phyloseq object. Default is `FALSE`.
 #' @param merged_profiles `Logical`; if `TRUE` (the default) the file to be
@@ -21,12 +21,10 @@
 #' @returns A phyloseq object representing the MetaPhlAn profile.
 #'
 #' @note
-#' If `mtphlan_profile` is an already loaded object, it should be filtered to
-#' the chosen taxonomic rank prior to calling `metaphlan_to_phyloseq()`. The
-#' clade names should also not be shortened, otherwise the taxonomic table
-#' cannot be created. Should you wish to use the taxonomic names of the
-#' specified rank as the row names in the phyloseq object, set
-#' `use_taxa_names = TRUE`.
+#' If `mtphlan_profile` is an already loaded object, the clade names should not
+#' be shortened, otherwise the taxonomic table cannot be created. Should you
+#' wish to use the taxonomic names of the specified rank as the row names in
+#' the phyloseq object, set `use_taxa_names = TRUE`.
 #'
 #' @export
 #'
@@ -36,32 +34,12 @@
 #' @author Jérémy Rotzetter
 metaphlan_to_phyloseq <- function(
     mtphlan_profile,
-    taxa_lvl,
+    taxa_lvl = NULL,
     metadata = NULL,
     sample_column = NULL,
     use_taxa_names = FALSE,
     merged_profiles = TRUE) {
-  # Check if taxa_lvl is missing
-  if (missing(taxa_lvl)) {
-    stop(paste0(
-      "The 'taxa_lvl' parameter is missing. Please choose one of ",
-      "'kingdom', 'phylum', 'class', 'order', 'family', 'genus' or 'species'."
-    ))
-  }
-
-  taxa_lvl <- lowercase_str(taxa_lvl)
-
-  # Check if taxa_lvl is valid
-  valid_taxa_lvls <- c(
-    "k", "p", "c", "o", "f", "g", "s", "kingdom", "phylum",
-    "class", "order", "family", "genus", "species"
-  )
-  if (!(taxa_lvl %in% valid_taxa_lvls)) {
-    stop(paste0(
-      "Invalid taxa_lvl. Please choose one of 'kingdom', 'phylum', ",
-      "'class', 'order', 'family', 'genus', or 'species'."
-    ))
-  }
+  stopifnot(is.null(taxa_lvl) | is.character(taxa_lvl))
 
   # Load metaphlan profile from file
   if (is.character(mtphlan_profile)) {
@@ -76,13 +54,55 @@ metaphlan_to_phyloseq <- function(
     }
   }
 
-  # Filter to selected taxon level
-  mtphlan_profile <- filter_taxa_lvl(mtphlan_profile, taxa_lvl)
-
-  # Check if taxa level in profile matches selected level
-  if (!check_taxa_lvl(mtphlan_profile, taxa_lvl)) {
-    stop("Selected taxon level does not match metaphlan profile!")
+  if (merged_profiles && any(c("NCBI_tax_id", "additional_species")
+  %in% names(mtphlan_profile))) {
+    stop(paste(
+      "Loaded file seems to be a single MetaPhlAn profile!",
+      "Please set merged_profiles to FALSE."
+    ))
   }
+
+  if (!merged_profiles) {
+    if (!"relative_abundance" %in% names(mtphlan_profile)) {
+      stop(paste(
+        "Loaded profile does not appear to be a single MetaPhlAn profile!",
+        "Please set merged_profiles to TRUE."
+      ))
+    }
+
+    index <- which(names(mtphlan_profile) %in% c("clade_name", "relative_abundance"))
+    mtphlan_profile <- mtphlan_profile[index]
+  }
+
+  if (is.character(taxa_lvl)) {
+    # Convert taxa_lvl to lowercase
+    taxa_lvl <- lowercase_str(taxa_lvl)
+
+    # Check if taxa_lvl is valid
+    valid_taxa_lvls <- c(
+      "k", "p", "c", "o", "f", "g", "s", "t", "kingdom", "phylum",
+      "class", "order", "family", "genus", "species"
+    )
+    if (!(taxa_lvl %in% valid_taxa_lvls)) {
+      stop(paste(
+        "Invalid taxa_lvl. Please choose one of 'kingdom', 'phylum',",
+        "'class', 'order', 'family', 'genus', 'species', or 't (SGB)'."
+      ))
+    }
+
+    # # Check if selected taxon level matches metaphlan profile
+    # if (!check_taxa_lvl(mtphlan_profile, taxa_lvl)) {
+    #   stop("Selected taxon level does not match with filtered MetaPhlAn profile!")
+    # }
+
+    # Filter to selected taxon level
+    mtphlan_profile <- filter_taxa_lvl(mtphlan_profile, taxa_lvl)
+
+    if (nrow(mtphlan_profile) == 0) {
+      stop("Selected taxon level does not match with already filtered MetaPhlAn profile!")
+    }
+  }
+
   # Process metadata if provided
   if (!is.null(metadata) && merged_profiles == TRUE) {
     # Get the index of the sample_column
@@ -126,7 +146,7 @@ metaphlan_to_phyloseq <- function(
   # Get taxa table from profile
   taxa_table <- get_taxa_table(
     mtphlan_profile_cleaned,
-    taxa_lvl,
+    taxa_lvl = taxa_lvl,
     taxa_are_rows = FALSE,
     use_taxa_names = use_taxa_names
   )

@@ -170,7 +170,7 @@ get_sample_cols <- function(df) {
 #'  the 'clade_name' column.
 #' @param taxa_lvl A `character` string. The taxa level to be checked. Valid
 #'  options include 'kingdom', 'phylum', 'class', 'order', 'family', 'genus',
-#'  or 'species'. First letter abbreviations (e.g., 's') are also accepted.
+#'  'species' or 't' (SGB). First letter abbreviations (e.g., 's') are also accepted.
 #'
 #' @returns This function does not return any value. It stops the execution with
 #'  an error message if the taxa level is missing or invalid.
@@ -191,13 +191,13 @@ check_taxa_lvl <- function(mtphlan_profile, taxa_lvl) {
 
   # Check if taxa_lvl is valid
   valid_taxa_lvls <- c(
-    "k", "p", "c", "o", "f", "g", "s", "kingdom", "phylum",
+    "k", "p", "c", "o", "f", "g", "s", "t", "kingdom", "phylum",
     "class", "order", "family", "genus", "species"
   )
   if (!(taxa_lvl %in% valid_taxa_lvls)) {
     stop(paste0(
-      "Invalid taxa_lvl. Please choose one of 'kingdom', 'phylum', ",
-      "'class', 'order', 'family', 'genus', or 'species'."
+      "Invalid taxa_lvl. Please choose one of 'kingdom', 'phylum',",
+      "'class', 'order', 'family', 'genus', 'species', or 't (SGB)'."
     ))
   }
 
@@ -206,7 +206,7 @@ check_taxa_lvl <- function(mtphlan_profile, taxa_lvl) {
 
   matches <- regmatches(
     mtphlan_profile$clade_name,
-    gregexpr("([kpcofgs])(?=__)",
+    gregexpr("([kpcofgst])(?=__)",
       mtphlan_profile$clade_name,
       perl = TRUE
     )

@@ -8,8 +8,8 @@
 #'  ***k__Bacteria|p__Firmicutes|c__Bacilli|o__Lactobacillales|f__Lactobacillaceae***
 #'  and found in the 'clade_name' column.
 #' @param taxa_lvl A `character` string. The taxonomic level to extract
-#'  ('kingdom', 'phylum', 'class', 'order', 'family', 'genus', or 'species').
-#'   First letter abbreviations (e.g., 's') are also accepted.
+#'  ('kingdom', 'phylum', 'class', 'order', 'family', 'genus', 'species' or 't'
+#'  (SGB)). First letter abbreviations (e.g., 's') are also accepted.
 #'
 #' @returns A filtered data frame.
 #'
@@ -23,9 +23,10 @@
 filter_taxa_lvl <- function(df, taxa_lvl) {
   # Check if taxa_lvl is missing
   if (missing(taxa_lvl)) {
-    stop(paste0(
-      "The 'taxa_lvl' parameter is missing. Please choose one of ",
-      "'kingdom', 'phylum', 'class', 'order', 'family', 'genus' or 'species'."
+    stop(paste(
+      "The 'taxa_lvl' parameter is missing. Please choose one of",
+      "'kingdom', 'phylum', 'class', 'order', 'family', 'genus', 'species',",
+      "or 't (SGB)'."
     ))
   }
   # Convert taxa_lvl to lowercase
@@ -33,13 +34,13 @@ filter_taxa_lvl <- function(df, taxa_lvl) {
 
   # Check if taxa_lvl is valid
   valid_taxa_lvls <- c(
-    "k", "p", "c", "o", "f", "g", "s", "kingdom", "phylum",
+    "k", "p", "c", "o", "f", "g", "s", "t", "kingdom", "phylum",
     "class", "order", "family", "genus", "species"
   )
   if (!(taxa_lvl %in% valid_taxa_lvls)) {
-    stop(paste0(
-      "Invalid taxa_lvl. Please choose one of 'kingdom', 'phylum', ",
-      "'class', 'order', 'family', 'genus', or 'species'."
+    stop(paste(
+      "Invalid taxa_lvl. Please choose one of 'kingdom', 'phylum',",
+      "'class', 'order', 'family', 'genus', 'species', or 't (SGB)'."
     ))
   }
   # Extract the first letter of taxa_lvl

@@ -121,8 +121,8 @@ clean_metadata <- function(
 #'  and found in the 'clade_name' column or the column names themselves.
 #' @param taxa_lvl The taxonomic level at which the clade names should be
 #'  shortened. Valid options include 'kingdom', 'phylum', 'class', 'order',
-#'   'family', 'genus', or 'species'. First letter abbreviations (e.g., 's')
-#'    are also accepted.
+#'   'family', 'genus', 'species' or 't' (SGB). First letter abbreviations
+#'   (e.g., 's') are also accepted.
 #' @param apply_to_colnames `Logical` indicating whether the shortening should
 #'  be applied to column names or row values. Default is `TRUE`.
 #' @param selected_cols A `character` vector specifying the columns to which
@@ -175,9 +175,10 @@ shorten_clade_names <- function(
   # Check if taxa_lvl is missing
   if (missing(taxa_lvl)) {
     stop(
-      paste0(
-        "The 'taxa_lvl' parameter is missing. Please choose one of ",
-        "'kingdom', 'phylum', 'class', 'order', 'family', 'genus' or 'species'."
+      paste(
+        "The 'taxa_lvl' parameter is missing. Please choose one of",
+        "'kingdom', 'phylum', 'class', 'order', 'family', 'genus', 'species'",
+        "or 't' (SGB)."
       )
     )
   }
@@ -186,13 +187,13 @@ shorten_clade_names <- function(
 
   # Check if taxa_lvl is valid
   valid_taxa_lvls <- c(
-    "k", "p", "c", "o", "f", "g", "s", "kingdom", "phylum",
+    "k", "p", "c", "o", "f", "g", "s", "t", "kingdom", "phylum",
     "class", "order", "family", "genus", "species"
   )
   if (!(taxa_lvl %in% valid_taxa_lvls)) {
     stop(paste0(
       "Invalid taxa_lvl. Please choose one of 'kingdom', 'phylum', ",
-      "'class', 'order', 'family', 'genus', or 'species'."
+      "'class', 'order', 'family', 'genus', 'species' or 't' (SGB)."
     ))
   }
 

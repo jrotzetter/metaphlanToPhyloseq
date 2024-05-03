@@ -6,9 +6,9 @@
 <!-- badges: start -->
 
 [![GitHub
-release](https://img.shields.io/github/release/jrotzetter/metaphlanToPhyloseq?include_prereleases=&sort=semver&color=blue)](https://github.com/jrotzetter/metaphlanToPhyloseq/releases/ "View releases")
+Release](https://img.shields.io/github/release/jrotzetter/metaphlanToPhyloseq?include_prereleases=&sort=semver&color=blue)](https://github.com/jrotzetter/metaphlanToPhyloseq/releases/ "View releases")
 [![License](https://img.shields.io/badge/License-MIT-blue)](#license "View license summary")
-[![issues -
+[![Issues -
 metaphlanToPhyloseq](https://img.shields.io/github/issues/jrotzetter/metaphlanToPhyloseq)](https://github.com/jrotzetter/metaphlanToPhyloseq/issues "View open issues")
 [![Made with
 R](https://img.shields.io/badge/R-4.3.3-blue?logo=r&logoColor=white)](https://cran.r-project.org/ "Go to CRAN homepage")
@@ -66,14 +66,23 @@ single_profile <- single_profile[, c(1, 3)]
 
 # Create a phyloseq object
 physeq_single <- metaphlan_to_phyloseq(
-  mtphlan_profile = single_profile,
-  taxa_lvl = "genus",
-  use_taxa_names = TRUE
+    mtphlan_profile = single_profile,
+    taxa_lvl = "genus",
+    use_taxa_names = TRUE,
+    merged_profiles = FALSE
 )
 
 physeq_merged <- metaphlan_to_phyloseq(
   merged_profiles,
   taxa_lvl = "Species"
+)
+
+# Above steps are optional as the filtering to a specific taxonomic rank can be
+# done directly from within the function or not at all
+physeq <- metaphlan_to_phyloseq(
+  merged_abundance_profiles,
+  taxa_lvl = NULL,
+  use_taxa_names = TRUE
 )
 ```
 

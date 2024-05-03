@@ -18,8 +18,8 @@ and found in the 'clade_name' column or the column names themselves.}
 
 \item{taxa_lvl}{The taxonomic level at which the clade names should be
 shortened. Valid options include 'kingdom', 'phylum', 'class', 'order',
-'family', 'genus', or 'species'. First letter abbreviations (e.g., 's')
-are also accepted.}
+'family', 'genus', 'species' or 't' (SGB). First letter abbreviations
+(e.g., 's') are also accepted.}
 
 \item{apply_to_colnames}{\code{Logical} indicating whether the shortening should
 be applied to column names or row values. Default is \code{TRUE}.}

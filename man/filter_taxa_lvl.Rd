@@ -12,8 +12,8 @@ filter_taxa_lvl(df, taxa_lvl)
 and found in the 'clade_name' column.}
 
 \item{taxa_lvl}{A \code{character} string. The taxonomic level to extract
-('kingdom', 'phylum', 'class', 'order', 'family', 'genus', or 'species').
-First letter abbreviations (e.g., 's') are also accepted.}
+('kingdom', 'phylum', 'class', 'order', 'family', 'genus', 'species' or 't'
+(SGB)). First letter abbreviations (e.g., 's') are also accepted.}
 }
 \value{
 A filtered data frame.
