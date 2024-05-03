@@ -1,3 +1,13 @@
+# metaphlanToPhyloseq 0.2.0
+
+* `metaphlan_to_phyloseq()` now no longer requires data to be pre-filtered to
+a chosen taxonomic rank when not directly loading from a file.
+* Taxonomic rank is now optional for `metaphlan_to_phyloseq()` and deactivated
+by default, i.e. `taxa_lvl = NULL`, suppressing the filtering. Simply specify
+a valid taxonomic rank with `taxa_lvl` to filter to this rank.
+* Added support for Species Genome Bin (SGB) as an additional taxonomic rank
+(set `taxa_lvl = 't'`).
+
 # metaphlanToPhyloseq 0.1.0
 
 * `shorten_clade_names()` now also works with data that wasn't pre-filtered to a
