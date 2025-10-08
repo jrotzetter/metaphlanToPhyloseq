@@ -92,10 +92,9 @@ help pages in the documentation. Both are also available online at
 
 ## Planned features
 
-- Add valid, package-specific maintainer e-mail address
-- Add unit tests
-- Potential CRAN submission after further maturation and expansion of
-  the package (tree support, visualisations) in the future
+- Further maturation and expansion of the package (tree support,
+  visualisations) in the future → *will likely be implemented in another
+  package*
 
 ## Getting help
 
