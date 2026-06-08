@@ -7,8 +7,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Convert MetaPhlAn taxonomic profiles to phyloseq objects • metaphlanToPhyloseq</title>
 <script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Convert MetaPhlAn taxonomic profiles to phyloseq objects">
 <meta name="description" content="Simple package to load MetaPhlAn taxonomic profiles, clean or filter them based on specified taxonomic rank or abundance threshold, and create a phyloseq object from them.">
@@ -22,7 +22,7 @@
 
     <a class="navbar-brand me-2" href="index.html">metaphlanToPhyloseq</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -52,24 +52,23 @@
 </h1></div>
 <!-- badges: start -->
 
+<!-- badges: end -->
 <div class="section level2">
 <h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
 </h2>
 <p>metaphlanToPhyloseq is a simple R package to transform <strong>MetaPhlAn 4</strong> taxonomic microbiome abundance profiles into the right format for easy creation of a phyloseq object.</p>
+<p><em><strong>NOTE</strong>: The package is stable and fully functional but is no longer under active development. Updates and support will be provided on a best-effort basis.</em></p>
+<p><em><strong>Recommendation</strong>: Users looking for more advanced features and expanded capabilities are encouraged to explore the <a href="https://github.com/jrotzetter/microEDA" class="external-link">microEDA</a> package.</em></p>
 </div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
 <p>You can install the development version of metaphlanToPhyloseq from <a href="https://github.com/jrotzetter/metaphlanToPhyloseq" class="external-link">GitHub</a> with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># install.packages("devtools")</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"jrotzetter/metaphlanToPhyloseq"</span>, build_vignettes <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<p>Alternatively you can also use the <code>pak</code> package:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("pak")</span></span>
 <span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"jrotzetter/metaphlanToPhyloseq"</span><span class="op">)</span></span></code></pre></div>
 <p>Or the <code>remotes</code> package:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("remotes")</span></span>
 <span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"jrotzetter/metaphlanToPhyloseq"</span>, build_vignettes <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -85,7 +84,7 @@
 <div class="section level2">
 <h2 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
 </h2>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/jrotzetter/metaphlanToPhyloseq" class="external-link">metaphlanToPhyloseq</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Filter data to only include the specified taxonomic rank</span></span>
@@ -116,14 +115,6 @@
 <span>  use_taxa_names <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>For more details please see <code><a href="articles/metaphlanToPhyloseq.html">vignette("metaphlanToPhyloseq")</a></code> or the help pages in the documentation. Both are also available online at <a href="https://jrotzetter.github.io/metaphlanToPhyloseq/" class="uri">https://jrotzetter.github.io/metaphlanToPhyloseq/</a>.</p>
-</div>
-<div class="section level2">
-<h2 id="planned-features">Planned features<a class="anchor" aria-label="anchor" href="#planned-features"></a>
-</h2>
-<ul>
-<li>Further maturation and expansion of the package (tree support, visualisations) in the future → <em>will likely be implemented in another package</em>
-</li>
-</ul>
 </div>
 <div class="section level2">
 <h2 id="getting-help">Getting help<a class="anchor" aria-label="anchor" href="#getting-help"></a>
@@ -182,6 +173,7 @@
 <li><a href="https://github.com/jrotzetter/metaphlanToPhyloseq/issues" title="View open issues" class="external-link"><img src="https://img.shields.io/github/issues/jrotzetter/metaphlanToPhyloseq" alt="Issues - metaphlanToPhyloseq"></a></li>
 <li><a href="https://cran.r-project.org/" title="Go to CRAN homepage" class="external-link"><img src="https://img.shields.io/badge/R-4.3.3-blue?logo=r&amp;logoColor=white" alt="Made with R"></a></li>
 <li><a href="https://posit.co/products/open-source/rstudio/" title="Go to RSTUDIO IDE homepage" class="external-link"><img src="https://img.shields.io/badge/RStudio-2023.12.1_Build_402-blue?logo=rstudio&amp;logoColor=white" alt="Made with R"></a></li>
+<li><a href="https://www.repostatus.org/#inactive" class="external-link"><img src="https://www.repostatus.org/badges/latest/inactive.svg" alt="Project Status: Inactive"></a></li>
 </ul>
 </div>
 
@@ -194,7 +186,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer>
