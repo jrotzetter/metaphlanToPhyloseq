@@ -1,3 +1,10 @@
+# metaphlanToPhyloseq 0.2.1
+
+### Maintenance Status Update
+*   **Status Change**: The package is now in **maintenance-only mode**. It remains stable and fully functional for converting MetaPhlAn4 profiles to `phyloseq` objects.
+*   **Development Scope**: No new feature development is planned. Future updates will be restricted to critical bug fixes and compatibility adjustments.
+*   **Recommendation**: Users seeking more advanced capabilities are encouraged to explore the [microEDA](https://github.com/jrotzetter/microEDA) package.
+
 # metaphlanToPhyloseq 0.2.0
 
 * `metaphlan_to_phyloseq()` now no longer requires data to be pre-filtered to
